@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="canonical" href="https://fukushimahj.github.io/pages_en/cuda_memo0/">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Cuda memo0 - Hajime Fukushima's Page</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../stylesheets/extra.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+   
+  <link rel="icon" href="../img/favicon.ico">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H0C5RXK0FL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'G-H0C5RXK0FL');
+  </script>
+
+
+
+
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Hajime Fukushima's Page</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../cv/" class="nav-link">CV</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Research</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../research_intro/" class="dropdown-item">Overview</a>
+</li>
+                                    
+<li>
+    <a href="../paper/" class="dropdown-item">Publications</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#hello-world" class="nav-link">Hello, world!</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">グリッド, ブロック, スレッド</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#cudamalloc-cudafree" class="nav-link">デバイスでのメモリ確保: cudaMalloc, cudaFree</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#cudamemcpy" class="nav-link">デバイスメモリのコピー: cudaMemcpy</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_2" class="nav-link">ストリーム</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#_3" class="nav-link">ストリームとイベントの作成</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#cudastreamsynchronize" class="nav-link">ストリームの同期: cudaStreamSynchronize</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#cudastreamwaitevent" class="nav-link">ストリームの待機: cudaStreamWaitEvent</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#cudamemcpyasync" class="nav-link">ストリームを使ったメモリ確保、コピー: cudaMemcpyAsync</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>cuda コーディングを学習する際のメモです。</p>
+<h1 id="hello-world">Hello, world!</h1>
+<p>まずは、プログラム学習の定番である、"Hello, Wrold !"の出力を通して、GPUでの実行を練習します。</p>
+<pre><code class="language-cpp">#include &lt;cuda_runtime.h&gt;
+#include &lt;stdio.h&gt;
+
+
+__global__ void print_hello(){
+  printf(&quot;Hello, World!\n&quot;);
+}
+
+
+int main(void){
+
+  print_hello&lt;&lt;&lt;1,1,0&gt;&gt;&gt;();
+
+  cudaDeviceSynchronize();
+  cudaDeviceReset();
+
+}
+</code></pre>
+<p>上のコードは, Hello, world!を出力する関数をGPU上で実行するというものです。
+ターミナル上でのコンパイルには、<code>nvcc hello.cu</code>とすると(cudaのコードは<code>.cu</code>の拡張子を使います)、実行ファイルが生成されます。
+<code>print_hello</code>という関数の前の<code>__global__</code>という接頭文字は、GPU上で実行する関数につけるものであり、その関数の戻り値はvoidである必要があります。
+また、このようにGPU上で実行される関数をカーネル(kernel)と読んだりもします。</p>
+<p>今後、CPU側をホスト, GPU側をデバイスと呼ぶことにします。
+ホストからデバイス上で, <code>print_hello</code>という関数を実行するには、C言語系統の通常の関数呼び出しと比べて、関数名と引数の間に<code>&lt;&lt;&lt;1,1,0&gt;&gt;&gt;</code>を挟むことで呼び出すことできます(数字の意味は下で)。
+先頭のcuda特有の関数を使用するには<code>#include &lt;cuda_runtime.h&gt;</code>を導入する必要があります。</p>
+<p><code>cudaDeviceSynchronize()</code>はデバイスとの同期をとる関数で、通常はデイバス関数の終了をまってからホスト側の操作が実行されますが、
+デバイス関数がコードの末尾にある場合は、その終了を待つ必要があり、上の場合では呼び出す必要があります。</p>
+<h1 id="_1">グリッド, ブロック, スレッド</h1>
+<p>cudaでは、デバイス関数を多数並列で実行する機構が備えられていて、ユーザーが自在に設定することが可能です。
+Kernelはスレッドごとに実行される仕様になっています。
+このスレッドの集合をブロック、さらにブロックの集まりをグリッドと呼びます(<a href="https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html">ここ</a>の図見ると想像しやすいです)。</p>
+<p>ブロック内のスレッド数の設定は、以下のように行います。</p>
+<pre><code class="language-cpp">#include &lt;cuda_runtime.h&gt;
+#include &lt;stdio.h&gt;
+
+__global__ void get_thread_id(){
+  int i = threadIdx.x;
+  printf(&quot;thread Id:%d \n&quot;, i);
+}
+
+
+int main(void){
+
+  dim3 block(32);
+  get_thread_id&lt;&lt;&lt;1,block,0&gt;&gt;&gt;();
+
+  cudaDeviceSynchronize();
+  cudaDeviceReset();
+
+}
+
+</code></pre>
+<p>上のコードはスレッドを32つ持つブロックを１つもつグリッドを使用して、カーネルを実行するコードです。
+同様に、グリッドも複数作成して計算することも可能です。</p>
+<pre><code class="language-cpp">#include &lt;cuda_runtime.h&gt;
+#include &lt;stdio.h&gt;
+
+__global__ void get_thread_id(){
+  int id_thread = threadIdx.x;
+  int id_brock  = blockIdx.x;
+  int i = blockIdx.x*blockDim.x + threadIdx.x;
+  printf(&quot;thread id:%d block id:%d i:%d \n&quot;, id_thread, id_brock, i);
+}
+
+
+int main(void){
+
+  dim3 block(32);
+  dim3 grid(8);
+  get_thread_id&lt;&lt;&lt;grid,block,0&gt;&gt;&gt;();
+
+  cudaDeviceSynchronize();
+  cudaDeviceReset();
+
+}
+
+</code></pre>
+<p>ここでは、32のスレッドを持つブロックを8つ生成するコードとなっています。
+kernel内部では、<code>threadIdx.x</code>はスレッドがブロック内部でのID, <code>blockIdx.x</code>はグリッド内部でのIDを表します。
+上の計算では、計256個のスレッドが立ち上がっているので、各々のIDは各ブロックが持っているスレッドの総数を示す<code>blockDim.x</code>を用いて、
+コードにあるように<code>blockIdx.x*blockDim.x + threadIdx.x</code>。
+似た方法で、ブロック、グリッドともに２次元・３次元構造として設定することも可能です。</p>
+<h1 id="cudamalloc-cudafree">デバイスでのメモリ確保: cudaMalloc, cudaFree</h1>
+<p>次にcudaで、デバイス上のメモリを用いて配列を定義する方法についてみていきます。
+メモリの確保は<code>cudaMalloc</code>、その開放は<code>cudaFree</code>という関数を用います。
+それでは、具体的にその使用方法を見ていきましょう。</p>
+<pre><code>#include &lt;cuda_runtime.h&gt;
+#include &lt;stdio.h&gt;
+
+__global__ void get_thread_id(int *d_array){
+  int nthread = blockIdx.x*blockDim.x + threadIdx.x;
+  d_array[nthread] = 2*nthread;
+}
+
+__global__ void test_output(int *d_array){
+  int nthread = blockIdx.x*blockDim.x + threadIdx.x;
+  printf(&quot;nthread:%d array=%d \n&quot;, nthread, d_array[nthread]);
+}
+
+
+int main(void){
+
+  int n_block = 32;
+  int n_grid  = 8;
+  dim3 block(n_block);
+  dim3 grid(n_grid);
+
+  int *d_array;
+
+  // メモリの確保
+  cudaMalloc(&amp;d_array, sizeof(int)*n_block*n_grid);
+
+  get_thread_id&lt;&lt;&lt;grid,block,0&gt;&gt;&gt;(d_array);
+  test_output&lt;&lt;&lt;grid,block,0&gt;&gt;&gt;(d_array);
+
+  cudaFree(d_array);
+
+  cudaDeviceSynchronize();
+  cudaDeviceReset();
+
+}
+</code></pre>
+<p>上のコードは<code>cudaMalloc</code>を使用してデバイス上に配列を確保しています。この際、配列のポインタは<code>d_array</code>というポインタ変数に格納されます。
+ここで重要なことは、<code>d_arrray</code>という変数はホスト上で定義されていますが、そのポインタが示すメモリはデバイス上にあるという点です。
+ホスト上からは通常、デバイス上のメモリの値を見ることはできないため（その逆も）、ホスト上で<code>d_array[0]</code>などの値を確認しようとするとエラーとなります。
+また、確保した領域は自動では削除されないため、かならず<code>cudaFree</code>を実行する必要があります。</p>
+<p>上では、整数型の配列を<code>cudaMalloc</code>によりメモリを確保しましたが、他の実数型なども<code>cudaMalloc(&amp;d_array, sizeof(double))</code>などで確保することが可能です。</p>
+<h1 id="cudamemcpy">デバイスメモリのコピー: cudaMemcpy</h1>
+<p>上記に述べたように、<code>cudaMalloc</code>で確保した配列の値は基本的にはデバイス上でしか確認することはできません。
+このため、ホストとデバイス間で値を通信する関数<code>cudaMemcpy</code>が用意されています。</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;cuda_runtime.h&gt;
+#include &lt;stdio.h&gt;
+
+__global__ void get_thread_id(int *d_array){
+  int nthread = blockIdx.x*blockDim.x + threadIdx.x;
+  d_array[nthread] += 2;
+}
+
+__global__ void test_output(int *d_array){
+  int nthread = blockIdx.x*blockDim.x + threadIdx.x;
+  printf(&quot;nthread:%d array=%d \n&quot;, nthread, d_array[nthread]);
+}
+
+
+int main(void){
+
+  int n_block = 32;
+  int n_grid  = 8;
+  dim3 block(n_block);
+  dim3 grid(n_grid);
+
+  int *d_array;
+  int *h_array;
+
+  // メモリの確保
+  int n_array = n_block*n_grid;
+  cudaMalloc(&amp;d_array, sizeof(int)*n_array);
+  h_array = new int[n_array];
+
+  // 初期値代入
+  for(int i=0; i&lt;n_array; i++){
+    h_array[i] = i;
+  }
+
+  // host からdeviceへ転送
+  cudaMemcpy(d_array, h_array, sizeof(int)*n_array, cudaMemcpyHostToDevice);
+
+  test_output&lt;&lt;&lt;grid,block,0&gt;&gt;&gt;(d_array);
+  get_thread_id&lt;&lt;&lt;grid,block,0&gt;&gt;&gt;(d_array);
+
+  // deviceからhostへ転送
+  cudaMemcpy(h_array, d_array, sizeof(int)*n_array, cudaMemcpyDeviceToHost);
+
+  for(int i=0; i&lt;n_array; i++){
+    std::cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; h_array[i] &lt;&lt; std::endl;
+  }
+
+  // メモリの削除
+  cudaFree(d_array);
+  delete h_array;
+
+  cudaDeviceSynchronize();
+  cudaDeviceReset();
+
+}
+</code></pre>
+<p><code>cudaMemcpy</code>では、受信側のポインタ、送信側のポインタの順で設定します。
+また、ホストからデバイスに送るときには<code>cudaMemcpyHostToDevice</code>, デバイスからホストに送るときには<code>cudaMemcpyDeviceToHost</code>を指定する必要があります。</p>
+<h1 id="_2">ストリーム</h1>
+<p>cudaにはカーネル実行に関して、その実行順番を制御するStreamという機能が存在します。
+実はこれまでの</p>
+<h2 id="_3">ストリームとイベントの作成</h2>
+<h2 id="cudastreamsynchronize">ストリームの同期: cudaStreamSynchronize</h2>
+<h2 id="cudastreamwaitevent">ストリームの待機: cudaStreamWaitEvent</h2>
+<h2 id="cudamemcpyasync">ストリームを使ったメモリ確保、コピー: cudaMemcpyAsync</h2></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
