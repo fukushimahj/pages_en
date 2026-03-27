@@ -1,0 +1,28 @@
+site_name: Hajime Fukushima's Page
+site_url: https://fukushimahj.github.io/pages_en/
+
+nav:
+  - Home: index.md
+  - CV: cv.md
+  - Research:
+    - Overview: research_intro.md
+    - Publications: paper.md
+#  - Research Activities: research.md
+#    - Workshops and Activities: workshop.md
+#  - Links: link.md
+#  - Notes: memo.md
+
+theme:
+  name: bootstrap
+  features:
+    - navigation.top   # Hide left navigation
+  custom_dir: docs/overrides
+
+markdown_extensions:
+  - md_in_html
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - include-markdown
