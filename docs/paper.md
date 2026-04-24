@@ -3,6 +3,8 @@
 
 ## Preprints
 
+1. "SFUMATO#: a GPU accelerated code for Self-Gravitational Radiation Hydrodynamics Simulation with Adaptive Mesh Refinement", Hajime Fukushima, Tomoaki Matsumoto; [arXiv:2604.21438](https://arxiv.org/abs/2604.21438)
+
 ## Published in refereed journals
 
 **Lead-Author Articles**
