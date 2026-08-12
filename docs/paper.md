@@ -3,8 +3,6 @@
 
 ## Preprints
 
-1. "SFUMATO#: a GPU accelerated code for Self-Gravitational Radiation Hydrodynamics Simulation with Adaptive Mesh Refinement", Hajime Fukushima, Tomoaki Matsumoto; [arXiv:2604.21438](https://arxiv.org/abs/2604.21438)
-
 ## Published in refereed journals
 
 **Lead-Author Articles**
@@ -19,6 +17,7 @@
 1. "The formation of globular clusters with top-heavy initial mass functions", Hajime Fukushima, Hidenobu Yajima, MNRAS, 524, 1422 (2023); arXiv: 2303.12405; [ADS](https://ui.adsabs.harvard.edu/abs/2023MNRAS.524.1422F/abstract)
 1. "Generation of high circular polarization of interstellar Lyman α radiation triggering biological homochirality", Hajime Fukushima, Hidenobu Yajima, Masayuki Umemura, MNRAS, 524, 2114 (2023); arXiv: [2306.12101](https://arxiv.org/abs/2306.12101)
 1. "Impacts of stellar wind and supernovae on the star cluster formation: origins of extremely high N/O ratios and multiple stellar populations", Hajime Fukushima, Hidenobu Yajima, PASJ, 76, 1122 (2024); [arXiv:2404.10535](https://arxiv.org/abs/2404.10535); [ADS](https://ui.adsabs.harvard.edu/abs/2024PASJ...76.1122F/abstract)
+1. "SFUMATO#: a GPU accelerated code for Self-Gravitational Radiation Hydrodynamics Simulation with Adaptive Mesh Refinement", Hajime Fukushima, Tomoaki Matsumoto, PASJ, 78, 1284 (2026); [arXiv:2604.21438](https://arxiv.org/abs/2604.21438); [ADS](https://ui.adsabs.harvard.edu/abs/2026PASJ...78.1284F/abstract)
 
 **Co-Author Articles**
 
